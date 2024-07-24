@@ -22,7 +22,7 @@ This project is a Django-based application for managing books and reviews. Users
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/yourusername/assignment_api.git
+    git clone https://github.com/KC-Kollu/assignment_api.git
     cd assignment_api
     ```
 
@@ -64,10 +64,78 @@ This project is a Django-based application for managing books and reviews. Users
 
 ## Project Structure
 
-- `assignment_api/`: The Django project directory.
-- `books/`: The Django app for managing books and reviews.
-- `templates/`: HTML templates for the front-end.
-- `static/`: Static files (CSS, JS).
-- `media/`: Directory for uploaded book images.
-- `requirements.txt`: List of Python dependencies.
-- `README.md`: Project documentation.
+### Backend
+
+#### `assignment_api/`
+This is the main Django project directory that contains settings and configuration files for the project.
+
+#### `books/`
+This Django app is responsible for managing books and reviews.
+
+- **`models.py`**:
+  - Defines the database schema for the `Book` and `Review` models.
+  - `Book` model includes fields like `title`, `author`, `description`, `published_date`, and `image`.
+  - `Review` model includes fields like `book`, `review_text`, `rating`, and `reviewer`.
+
+- **`views.py`**:
+  - Contains the view classes for handling HTTP requests related to books and reviews.
+  - `BookListCreateView`: Handles listing and creating books.
+  - `BookDetailView`: Handles retrieving, updating, and deleting a specific book.
+  - `ReviewCreateView`: Handles creating reviews for a specific book.
+  - `ReviewDetailView`: Handles updating and deleting specific reviews.
+
+- **`urls.py`**:
+  - Defines the URL patterns for the `books` app.
+  - Maps URLs to the appropriate view classes.
+  - Example: `path('books/', BookListCreateView.as_view(), name='book-list-create')`
+
+- **`serializers.py`**:
+  - Contains the serializer classes for converting model instances to and from JSON.
+  - `BookSerializer`: Serializes book instances. Includes a nested `ReviewSerializer` to include reviews related to a book.
+  - `ReviewSerializer`: Serializes review instances.
+
+#### `users/`
+This Django app handles user registration, login, and authentication.
+
+- **`models.py`**:
+  - Uses Django's built-in `User` model for authentication.
+
+- **`views.py`**:
+  - Contains the view classes for handling user authentication.
+  - `RegisterView`: Handles user registration.
+  - `LoginView`: Handles user login.
+
+- **`urls.py`**:
+  - Defines the URL patterns for the `users` app.
+  - Maps URLs to the appropriate view classes.
+  - Example: `path('register/', RegisterView.as_view(), name='register')`
+
+- **`serializers.py`**:
+  - Contains the serializer classes for converting user instances to and from JSON.
+  - `UserSerializer`: Serializes user instances.
+
+### Frontend
+
+#### `templates/index.html`
+This is the main HTML file for the front-end application. It includes the layout and structure of the web page, and it uses Bootstrap for styling.
+
+- **Structure**:
+  - Navigation bar with login and register modals.
+  - Search bar to filter books.
+  - Grid layout to display books.
+  - Modal to display book details and reviews.
+  - Forms for submitting reviews.
+
+#### `static/script.js`
+This JavaScript file contains the logic for interacting with the REST API and dynamically updating the HTML content.
+
+- **Functions**:
+  - **`fetchBooks(query = '')`**: Fetches and displays a list of books based on the search query.
+  - **`showBookDetails(book)`**: Displays detailed information about a selected book, including reviews.
+  - **`addReview(bookId, reviewText, reviewRating)`**: Adds a new review for a book.
+  - **`editReview(reviewId, reviewText, reviewRating, bookId)`**: Edits an existing review.
+  - **`deleteReview(reviewId, bookId)`**: Deletes a review.
+  - **`handleLogin(event)`**: Handles user login by sending a POST request to the API.
+  - **`handleRegister(event)`**: Handles user registration by sending a POST request to the API.
+  - **`handleLogout()`**: Handles user logout by clearing local storage.
+  - **`updateNavbar()`**: Updates the navigation bar based on the user's authentication status.
